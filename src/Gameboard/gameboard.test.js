@@ -35,3 +35,47 @@ test("All target cells must be vacant in order to place the ship", () => {
     "All target cells must be vacant in order to place the ship"
   );
 });
+describe("placeAttack() tests", () => {
+  test("placeAttack() only accepts coordinates that are on the gameboard", () => {
+    let player = new Gameboard();
+    expect(() =>
+      player
+        .placeAttack([11, 11])
+        .toThrow("Coordinates must be on the gameboard")
+    );
+  });
+  test("placeAttack() marks cells as missed when cell is empty and attacked", () => {
+    let player = new Gameboard();
+    player.placeAttack([0, 0]);
+    expect(player.gameBoard[0][0].miss).toBe(true);
+  });
+  test("placeAttack() marks cells as hit when cell is occupied and attacked", () => {
+    let player = new Gameboard();
+    let patrol = new Ship(2);
+    player.placeShip(patrol, [0, 0], [0, 1]);
+    player.placeAttack([0, 0]);
+    expect(player.gameBoard[0][0].hit).toBe(true);
+  });
+  test("placeAttack() updates attacked ships hit count", () => {
+    let player = new Gameboard();
+    let patrol = new Ship(2);
+    player.placeShip(patrol, [0, 0], [0, 1]);
+    player.placeAttack([0, 0]);
+    expect(patrol.hitCount).toBe(1);
+  });
+  test("placeAttack() updates attacked ship isSunk property", () => {
+    let player = new Gameboard();
+    let patrol = new Ship(2);
+    player.placeShip(patrol, [0, 0], [0, 1]);
+    player.placeAttack([0, 0]);
+    player.placeAttack([0, 1]);
+    expect(patrol.sunk).toBe(true);
+  });
+  test("placeAttack() doesn't allow attacking the same cell", () => {
+    let player = new Gameboard();
+    player.placeAttack([0, 0]);
+    expect(() => player.placeAttack([0, 0])).toThrow(
+      "You can't attack the same cell twice"
+    );
+  });
+});

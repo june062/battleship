@@ -14,5 +14,5 @@ class Ship {
     }
   }
 }
-let carrier = new Ship(5);
+
 module.exports = Ship;
