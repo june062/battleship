@@ -6,10 +6,11 @@ test("Gameboard grid is correctly set up", () => {
 });
 test("Places ships in gameboards", () => {
   let player = new Gameboard();
-  let patrol = new Ship(2);
-  player.placeShip(patrol, [0, 0], [0, 1]);
-  expect(player.gameBoard[0][0].ship).toStrictEqual(patrol);
-  expect(player.gameBoard[0][1].ship).toStrictEqual(patrol);
+  let submarine = new Ship(3);
+  player.placeShip(submarine, [0, 0], [0, 2]);
+  expect(player.gameBoard[0][0].ship).toStrictEqual(submarine);
+  expect(player.gameBoard[0][1].ship).toStrictEqual(submarine);
+  expect(player.gameBoard[0][2].ship).toStrictEqual(submarine);
 });
 test("placeShip() method does not accept diagonal placements", () => {
   let player = new Gameboard();
@@ -25,4 +26,12 @@ test("Given coordinates must be on the board", () => {
     Error("Ship must be on the board")
   );
 });
-/* test("All cells must vacant in order to place the ship") */
+test("All target cells must be vacant in order to place the ship", () => {
+  let player = new Gameboard();
+  let patrol = new Ship(2);
+  let submarine = new Ship(3);
+  player.placeShip(patrol, [0, 1], [1, 1]);
+  expect(() => player.placeShip(submarine, [1, 0], [1, 2])).toThrow(
+    "All target cells must be vacant in order to place the ship"
+  );
+});
