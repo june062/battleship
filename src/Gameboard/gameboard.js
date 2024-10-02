@@ -1,3 +1,4 @@
+let Ship = require("../Ship/ships.js");
 class Gameboard {
   constructor() {
     this.gameBoard = [
@@ -12,7 +13,23 @@ class Gameboard {
         [{ship: null, miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false}], 
         [{ship: null, miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false}]
     ];
+    this.totalShips = 0;
+    this.totalSunkShips = 0;
+    
   }
+  #addToTotalShips(){
+    this.totalShips+= 1
+  }
+  #sunkShipsObserver = {subs:[this.checkIfGameIsOver.bind(this)],
+    
+    addSubs(sub){
+      this.subs.push(sub)
+    },
+    notify(){
+      this.subs.forEach((sub)=>sub())
+    },
+  }
+ 
    #notOnTheBoard(element){
     if(element > 10 || element< 0){
       return true;
@@ -75,13 +92,17 @@ class Gameboard {
     for(let i = checkResult.smallerNum;i <= checkResult.greaterNum; i++ ){
       if(checkResult.samePosition == "H"){
         this.gameBoard[checkResult.sameNum][i].ship = ship;
+        
+     
       }else{
         this.gameBoard[i][checkResult.sameNum].ship = ship;
+     
       }
     }
     }else{
       throw new Error("You can only place ships vertically or horizontally")
     }
+    this.#addToTotalShips()
   }
   placeAttack(coordinates){
     if(coordinates.some(this.#notOnTheBoard)){
@@ -94,11 +115,29 @@ class Gameboard {
     }else{
       this.gameBoard[coordinates[0]][coordinates[1]].hit = true;
       this.gameBoard[coordinates[0]][coordinates[1]].ship.hit()
-      this.gameBoard[coordinates[0]][coordinates[1]].ship.isSunk()
+
+       if(this.gameBoard[coordinates[0]][coordinates[1]].ship.isSunk()){
+          this.#sunkShipsObserver.notify()   
+          
+      } 
+      
     }
-
-
   }
+  checkIfGameIsOver(){
+   this.totalSunkShips = this.totalSunkShips + 1;
+    if(this.totalShips == this.totalSunkShips){
+      return "GAME OVER"
+    }  
+  }
+
 }
+
+ let player = new Gameboard();
+let patrol = new Ship(2);
+player.placeShip(patrol, [0, 0], [0, 1]);
+
+player.placeAttack([0, 0]);
+player.placeAttack([0,1])
+ 
 
 module.exports = Gameboard;
