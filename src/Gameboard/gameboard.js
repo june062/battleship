@@ -1,4 +1,3 @@
-let Ship = require("../Ship/ships.js");
 class Gameboard {
   constructor() {
     this.gameBoard = [
@@ -131,13 +130,5 @@ class Gameboard {
   }
 
 }
-
- let player = new Gameboard();
-let patrol = new Ship(2);
-player.placeShip(patrol, [0, 0], [0, 1]);
-
-player.placeAttack([0, 0]);
-player.placeAttack([0,1])
- 
 
 module.exports = Gameboard;
