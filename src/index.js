@@ -1,7 +1,7 @@
 import "./styles.css";
-let Gameboard = require("./Gameboard/gameboard.js");
+let createGridCells = require("./updateDOM/updateDOM.js");
+
 let Player = require("./Player/players.js");
-let Ship = require("./Ship/ships.js");
 
 let player1 = new Player("Juneid");
 let player2 = new Player("Computer");
@@ -20,3 +20,4 @@ console.log(
   player2.board.gameBoard[0][1],
   player2.board.gameBoard[0][1].ship.isSunk()
 );
+createGridCells();
