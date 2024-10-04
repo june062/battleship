@@ -83,6 +83,7 @@ describe("placeAttack() tests", () => {
     let patrol = new Ship(2);
     player.placeShip(patrol, [0, 0], [0, 1]);
     player.placeAttack([0, 0]);
-    expect(player.placeAttack([0, 1])).toBe("GAME OVER");
+    player.placeAttack([0, 1]);
+    expect(player.loser).toBe(true);
   });
 });

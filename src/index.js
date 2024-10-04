@@ -1,23 +1,49 @@
 import "./styles.css";
-let createGridCells = require("./updateDOM/updateDOM.js");
-
+let screenController = require("./updateDOM/updateDOM.js");
 let Player = require("./Player/players.js");
+let player = new Player();
+let computer = new Player();
 
-let player1 = new Player("Juneid");
-let player2 = new Player("Computer");
-/* console.log(player1.patrol); */
-player1.board.placeShip(player1.patrol, [0, 0], [0, 1]);
-player2.board.placeShip(player2.patrol, [0, 0], [0, 1]);
-/* PLayer 1 first attack */
-player2.board.placeAttack([0, 0]);
-console.log(player2.board.gameBoard[0][0].ship.isSunk());
-/* Player 2 first attack */
-player1.board.placeAttack([0, 0]);
-console.log(player1.board.gameBoard[0][0].ship.isSunk());
-/* Player 1 second attack */
-player2.board.placeAttack([0, 1]);
-console.log(
-  player2.board.gameBoard[0][1],
-  player2.board.gameBoard[0][1].ship.isSunk()
-);
-createGridCells();
+class GameController {
+  constructor(player1, player2) {
+    this.player1 = player1;
+    this.player2 = player2;
+    this.activePlayer = player1;
+  }
+  getActivePlayer() {
+    return this.activePlayer;
+  }
+  switchActivePlayer() {
+    this.activePlayer == this.player1
+      ? (this.activePlayer = this.player2)
+      : (this.activePlayer = this.player1);
+  }
+  getOtherPlayer() {
+    if (this.activePlayer == this.player1) {
+      return this.player2;
+    } else {
+      return this.player1;
+    }
+  }
+  placeShips(ship, row, col) {
+    this.getActivePlayer().board.placeShip(this[ship], row, col);
+    this.switchActivePlayer();
+  }
+  placeAttack(row, col) {
+    let attackStatus = this.getOtherPlayer().board.placeAttack([row, col]);
+    this.switchActivePlayer();
+    return attackStatus;
+  }
+}
+let game = new GameController(player, computer);
+
+screenController.createGridCells();
+let computerGrid = document.querySelector(".computer-grid-container");
+computer.board.placeShip(computer.patrol, [0, 0], [0, 1]);
+
+computerGrid.addEventListener("click", (event) => {
+  let rowCoord = event.target.dataset.row;
+  let colCoord = event.target.dataset.col;
+  let status = game.placeAttack(rowCoord, colCoord);
+  screenController.placeAttacksDOM(status, event.target);
+});

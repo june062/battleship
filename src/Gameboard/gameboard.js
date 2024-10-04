@@ -1,4 +1,7 @@
 class Gameboard {
+  #totalShips;
+  #totalSunkShips;
+  #loser;
   constructor() {
     this.gameBoard = [
         [{ship: null, miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false}], 
@@ -12,12 +15,14 @@ class Gameboard {
         [{ship: null, miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false}], 
         [{ship: null, miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false},{ship: null,miss: false, hit: false}]
     ];
-    this.totalShips = 0;
-    this.totalSunkShips = 0;
+    this.#totalShips = 0;
+    this.#totalSunkShips = 0;
+    
     
   }
+ 
   #addToTotalShips(){
-    this.totalShips+= 1
+    this.#totalShips+= 1
   }
   #sunkShipsObserver = {subs:[this.checkIfGameIsOver.bind(this)],
     
@@ -104,6 +109,7 @@ class Gameboard {
     this.#addToTotalShips()
   }
   placeAttack(coordinates){
+    let attackStatus;
     if(coordinates.some(this.#notOnTheBoard)){
       throw new Error("Coordinates must be on the gameboard")
     }
@@ -111,21 +117,26 @@ class Gameboard {
       throw new Error("You can't attack the same cell twice")
     }else if(this.gameBoard[coordinates[0]][coordinates[1]].ship === null){
       this.gameBoard[coordinates[0]][coordinates[1]].miss = true;
+      attackStatus = "miss";
     }else{
       this.gameBoard[coordinates[0]][coordinates[1]].hit = true;
       this.gameBoard[coordinates[0]][coordinates[1]].ship.hit()
+      attackStatus = "hit";
 
        if(this.gameBoard[coordinates[0]][coordinates[1]].ship.isSunk()){
-          return this.#sunkShipsObserver.notify()   
+           this.#sunkShipsObserver.notify()   
           
       } 
       
     }
+    return attackStatus
   }
   checkIfGameIsOver(){
-   this.totalSunkShips = this.totalSunkShips + 1;
-    if(this.totalShips == this.totalSunkShips){
-      return "GAME OVER"
+   this.#totalSunkShips = this.#totalSunkShips + 1;
+    if(this.#totalShips == this.#totalSunkShips){
+      console.log("You sunk a ship!")
+      /* this.#loser = true; */
+      /* Some kind of event that alerts functions that the game is over */
     }  
   }
 
