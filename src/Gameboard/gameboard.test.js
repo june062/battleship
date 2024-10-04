@@ -63,7 +63,7 @@ describe("placeAttack() tests", () => {
     player.placeAttack([0, 0]);
     expect(patrol.hitCount).toBe(1);
   });
-  test.skip("placeAttack() updates attacked ship isSunk property", () => {
+  test("placeAttack() updates attacked ship isSunk property", () => {
     let player = new Gameboard();
     let patrol = new Ship(2);
     player.placeShip(patrol, [0, 0], [0, 1]);
@@ -71,14 +71,14 @@ describe("placeAttack() tests", () => {
     player.placeAttack([0, 1]);
     expect(patrol.sunk).toBe(true);
   });
-  test.skip("placeAttack() doesn't allow attacking the same cell", () => {
+  test("placeAttack() doesn't allow attacking the same cell", () => {
     let player = new Gameboard();
     player.placeAttack([0, 0]);
     expect(() => player.placeAttack([0, 0])).toThrow(
       "You can't attack the same cell twice"
     );
   });
-  test.skip("Game is over when all ships have been sunk", () => {
+  test("Game is over when all ships have been sunk", () => {
     let player = new Gameboard();
     let patrol = new Ship(2);
     player.placeShip(patrol, [0, 0], [0, 1]);

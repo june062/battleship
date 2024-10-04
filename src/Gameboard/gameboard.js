@@ -116,7 +116,7 @@ class Gameboard {
       this.gameBoard[coordinates[0]][coordinates[1]].ship.hit()
 
        if(this.gameBoard[coordinates[0]][coordinates[1]].ship.isSunk()){
-          this.#sunkShipsObserver.notify()   
+          return this.#sunkShipsObserver.notify()   
           
       } 
       

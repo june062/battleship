@@ -1,5 +1,5 @@
 function createGridCells() {
-  for (let i = 0; i < 99; i++) {
+  for (let i = 0; i < 100; i++) {
     let gridCellPlayer = document.createElement("div");
     gridCellPlayer.classList.add("grid-cell");
     let gridCellComputer = document.createElement("div");

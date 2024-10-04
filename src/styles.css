@@ -20,12 +20,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 .player-grid-container,
 .computer-grid-container {
   border: solid black;
-  height: 40vw;
-  width: 40vw;
+  height: 35vw;
+  width: 35vw;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -34,4 +35,7 @@ body {
   height: 10%;
   width: 10%;
   border: 1px solid black;
+}
+.grid-cell:hover {
+  background-color: rgba(255, 2, 2, 0.822);
 }
