@@ -68,7 +68,7 @@ body {
 .battleship > *,
 .destroyer > *,
 .submarine > *,
-.patrol-boat > * {
+.patrol > * {
   flex: 1;
   border: 2px solid black;
 }
@@ -88,7 +88,7 @@ body {
   display: flex;
   width: 7.38rem;
 }
-.patrol-boat {
+.patrol {
   display: flex;
   width: 4.92rem;
 }

@@ -30,7 +30,29 @@ class UIController {
       }
     }
   }
-  placeShipsDOM() {}
+  placeShipsDOM(eventTarget, shipLength, player) {
+    if (player == "player") {
+      for (let i = 0; i < shipLength; i++) {
+        let element = document.querySelector(
+          `.player-grid-container > [data-row = '${
+            eventTarget.dataset.row
+          }'][data-col = '${+eventTarget.dataset.col + i}']`
+        );
+
+        element.style.backgroundColor = "blue";
+      }
+    } else {
+      for (let i = 0; i < shipLength; i++) {
+        let element = document.querySelector(
+          `.computer-grid-container > [data-row = '${
+            eventTarget.dataset.row
+          }'][data-col = '${+eventTarget.dataset.col + i}']`
+        );
+
+        element.style.backgroundColor = "blue";
+      }
+    }
+  }
 }
 let screenController = new UIController();
 module.exports = screenController;
