@@ -124,7 +124,8 @@ class Gameboard {
       attackStatus = "hit";
 
        if(this.gameBoard[coordinates[0]][coordinates[1]].ship.isSunk()){
-           this.#sunkShipsObserver.notify()   
+        attackStatus = this.checkIfGameIsOver();
+           
           
       } 
       
@@ -134,10 +135,10 @@ class Gameboard {
   checkIfGameIsOver(){
    this.#totalSunkShips = this.#totalSunkShips + 1;
     if(this.#totalShips == this.#totalSunkShips){
-      console.log("You sunk a ship!")
-      /* this.#loser = true; */
-      /* Some kind of event that alerts functions that the game is over */
-    }  
+      return "all sunk"
+    }  else{
+      return "one sunk"
+    }
   }
 
 }

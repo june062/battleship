@@ -4,10 +4,38 @@ class UIController {
       let missIcon = document.createElement("p");
       missIcon.textContent = "x";
       target.appendChild(missIcon);
+    } else if (attackStatus == "hit") {
+      let hitIcon = document.createElement("p");
+      hitIcon.textContent = "O";
+      target.appendChild(hitIcon);
+    } else if (attackStatus == "one sunk") {
+      let hitIcon = document.createElement("p");
+      hitIcon.textContent = "O";
+      target.appendChild(hitIcon);
+
+      let audioElement = document.createElement("audio");
+      console.log(audioElement);
+      audioElement.setAttribute("autoplay", "");
+      let audioSource = document.createElement("source");
+      audioSource.setAttribute("src", `${require("../Assets/fart.mp3")}`);
+      audioSource.setAttribute("type", "audio/mpeg");
+      audioElement.appendChild(audioSource);
+      audioElement.style.display = "hidden";
+      target.appendChild(audioElement);
     } else {
       let hitIcon = document.createElement("p");
       hitIcon.textContent = "O";
       target.appendChild(hitIcon);
+
+      let audioElement = document.createElement("audio");
+      console.log(audioElement);
+      audioElement.setAttribute("autoplay", "");
+      let audioSource = document.createElement("source");
+      audioSource.setAttribute("src", `${require("../Assets/battleshit.mp3")}`);
+      audioSource.setAttribute("type", "audio/mpeg");
+      audioElement.appendChild(audioSource);
+      audioElement.style.display = "hidden";
+      target.appendChild(audioElement);
     }
   }
 
@@ -52,6 +80,14 @@ class UIController {
         element.style.backgroundColor = "blue";
       }
     }
+  }
+  displayActivePlayer(player) {
+    let gameHeader = document.querySelector(".game-title");
+    gameHeader.textContent = `it is ${player}'s turn `;
+  }
+  displayWinner(player) {
+    let gameHeader = document.querySelector(".game-title");
+    gameHeader.textContent = `${player}'s the winner! `;
   }
 }
 let screenController = new UIController();
