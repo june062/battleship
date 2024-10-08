@@ -1,19 +1,18 @@
 class UIController {
   placeAttacksDOM(attackStatus, target) {
+    const missIcon = document.createElement("p");
+    missIcon.textContent = "*";
+    const hitIcon = document.createElement("p");
+    hitIcon.textContent = "X";
+    let colorRed = "rgb(235, 45, 45)";
     if (attackStatus == "miss") {
-      let missIcon = document.createElement("p");
-      missIcon.textContent = "*";
       target.appendChild(missIcon);
     } else if (attackStatus == "hit") {
-      let hitIcon = document.createElement("p");
-      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
-      target.style.backgroundColor = "rgb(235, 45, 45)";
+      target.style.backgroundColor = colorRed;
     } else if (attackStatus == "one sunk") {
-      let hitIcon = document.createElement("p");
-      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
-      target.style.backgroundColor = "rgb(235, 45, 45)";
+      target.style.backgroundColor = colorRed;
 
       let audioElement = document.createElement("audio");
       audioElement.setAttribute("autoplay", "");
@@ -24,10 +23,8 @@ class UIController {
       audioElement.style.display = "hidden";
       target.appendChild(audioElement);
     } else {
-      let hitIcon = document.createElement("p");
-      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
-      target.style.backgroundColor = "rgb(235, 45, 45)";
+      target.style.backgroundColor = colorRed;
 
       let audioElement = document.createElement("audio");
       audioElement.setAttribute("autoplay", "");
@@ -103,14 +100,11 @@ class UIController {
     }
   }
   revealBoard(boardToShowClass, boardToShow) {
-    /* Loop through board to show, look at the status of all the cells,
-    (hit, miss, sunk) and update the correct board DOM with that info*/
+    const missIcon = document.createElement("p");
+    missIcon.textContent = "*";
     for (let row = 0; row < 10; row++) {
       for (let col = 0; col < 10; col++) {
-        if (
-          boardToShow[row][col].ship == null &&
-          boardToShow[row][col].miss == false
-        ) {
+        if (boardToShow[row][col].ship == null) {
           continue;
         } else if (
           boardToShow[row][col].ship !== null &&
@@ -120,6 +114,8 @@ class UIController {
             `${boardToShowClass}-grid-container [data-row = '${row}'][data-col = '${col}']`
           );
           gridCell.style.backgroundColor = "rgb(45, 203, 235)";
+
+          gridCell.appendChild(missIcon);
         } else if (
           boardToShow[row][col].ship !== null &&
           boardToShow[row][col].hit == true
