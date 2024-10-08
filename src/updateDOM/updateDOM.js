@@ -40,27 +40,27 @@ class UIController {
   createGridCells() {
     for (let row = 0; row < 10; row++) {
       for (let col = 0; col < 10; col++) {
-        let gridCellPlayer = document.createElement("div");
-        gridCellPlayer.classList.add("grid-cell");
-        gridCellPlayer.setAttribute("data-row", row);
-        gridCellPlayer.setAttribute("data-col", col);
-        let gridCellComputer = document.createElement("div");
-        gridCellComputer.classList.add("grid-cell");
-        gridCellComputer.setAttribute("data-row", row);
-        gridCellComputer.setAttribute("data-col", col);
-        let playerGrid = document.querySelector(".player-grid-container");
-        let computerGrid = document.querySelector(".computer-grid-container");
+        let gridCellplayer1 = document.createElement("div");
+        gridCellplayer1.classList.add("grid-cell");
+        gridCellplayer1.setAttribute("data-row", row);
+        gridCellplayer1.setAttribute("data-col", col);
+        let gridCellplayer2 = document.createElement("div");
+        gridCellplayer2.classList.add("grid-cell");
+        gridCellplayer2.setAttribute("data-row", row);
+        gridCellplayer2.setAttribute("data-col", col);
+        let player1Grid = document.querySelector(".player1-grid-container");
+        let player2Grid = document.querySelector(".player2-grid-container");
 
-        playerGrid.appendChild(gridCellPlayer);
-        computerGrid.appendChild(gridCellComputer);
+        player1Grid.appendChild(gridCellplayer1);
+        player2Grid.appendChild(gridCellplayer2);
       }
     }
   }
-  placeShipsDOM(eventTarget, shipLength, player) {
-    if (player == "player") {
+  placeShipsDOM(eventTarget, shipLength, player1) {
+    if (player1 == "player1") {
       for (let i = 0; i < shipLength; i++) {
         let element = document.querySelector(
-          `.player-grid-container > [data-row = '${
+          `.player1-grid-container > [data-row = '${
             eventTarget.dataset.row
           }'][data-col = '${+eventTarget.dataset.col + i}']`
         );
@@ -70,7 +70,7 @@ class UIController {
     } else {
       for (let i = 0; i < shipLength; i++) {
         let element = document.querySelector(
-          `.computer-grid-container > [data-row = '${
+          `.player2-grid-container > [data-row = '${
             eventTarget.dataset.row
           }'][data-col = '${+eventTarget.dataset.col + i}']`
         );
@@ -79,13 +79,13 @@ class UIController {
       }
     }
   }
-  displayActivePlayer(player) {
+  displayActivePlayer(player1) {
     let gameHeader = document.querySelector(".game-title");
-    gameHeader.textContent = `it is ${player}'s turn `;
+    gameHeader.textContent = `it is ${player1}'s turn `;
   }
-  displayWinner(player) {
+  displayWinner(player1) {
     let gameHeader = document.querySelector(".game-title");
-    gameHeader.textContent = `${player}'s the winner! `;
+    gameHeader.textContent = `${player1}'s the winner! `;
   }
   hideBoard(boardToHideClass) {
     let boardToHideDOM = document.querySelector(

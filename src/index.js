@@ -2,22 +2,24 @@ import "./styles.css";
 let screenController = require("./updateDOM/updateDOM.js");
 let GameController = require("./gameController/gameController.js");
 let Player = require("./Player/players.js");
-let player = new Player("player1");
-let computer = new Player("player2");
+let player1 = new Player("player1");
+let player2 = new Player("player2");
 
-let game = new GameController(player, computer);
-let computerGrid = document.querySelector(".computer-grid-container");
-let playerShips = document.querySelector(".player.ships-container");
-let computerShips = document.querySelector(".computer.ships-container");
-let playerGrid = document.querySelector(".player-grid-container");
+let game = new GameController(player1, player2);
+let player2Grid = document.querySelector(".player2-grid-container");
+let player1Ships = document.querySelector(".player1.ships-container");
+let player2Ships = document.querySelector(".player2.ships-container");
+let player1Grid = document.querySelector(".player1-grid-container");
 screenController.createGridCells();
 
 /* Placing ships stage */
-playerShips.addEventListener("click", (event) => {
-  if (game.getGameStage() == "beg" && game.getActivePlayer() === player) {
+player1Ships.addEventListener("click", (event) => {
+  if (game.getGameStage() == "beg" && game.getActivePlayer() === player1) {
     let selectedShipEventTarget = event.target.parentElement.classList[1];
-    let playerShipContainer = document.querySelector(".player.ships-container");
-    playerShipContainer.setAttribute(
+    let player1ShipContainer = document.querySelector(
+      ".player1.ships-container"
+    );
+    player1ShipContainer.setAttribute(
       "data-selectedShip",
       selectedShipEventTarget
     );
@@ -26,29 +28,31 @@ playerShips.addEventListener("click", (event) => {
   }
 });
 
-playerGrid.addEventListener("click", (event) => {
-  if (game.getGameStage() == "beg" && game.getActivePlayer() === player) {
+player1Grid.addEventListener("click", (event) => {
+  if (game.getGameStage() == "beg" && game.getActivePlayer() === player1) {
     let rowCoord = event.target.dataset.row;
     let colCoord = event.target.dataset.col;
-    let playerShipContainer = document.querySelector(".player.ships-container");
-    let selectedShip = playerShipContainer.dataset.selectedship;
+    let player1ShipContainer = document.querySelector(
+      ".player1.ships-container"
+    );
+    let selectedShip = player1ShipContainer.dataset.selectedship;
 
     game.placeShips(selectedShip, [+rowCoord, +colCoord]);
     screenController.placeShipsDOM(
       event.target,
-      player[selectedShip].length,
-      "player"
+      player1[selectedShip].length,
+      "player1"
     );
-    let shipDOM = document.querySelector(`.player .${selectedShip}`);
+    let shipDOM = document.querySelector(`.player1 .${selectedShip}`);
     shipDOM.remove();
 
-    playerShipContainer.dataset.selectedship = "";
+    player1ShipContainer.dataset.selectedship = "";
 
-    if (!playerShipContainer.firstElementChild) {
-      let playerGridClass = ".player";
+    if (!player1ShipContainer.firstElementChild) {
+      let player1GridClass = ".player1";
 
       game.switchActivePlayer();
-      screenController.hideBoard(playerGridClass);
+      screenController.hideBoard(player1GridClass);
       screenController.displayActivePlayer(game.getActivePlayer().name);
     }
     event.stopImmediatePropagation();
@@ -57,13 +61,13 @@ playerGrid.addEventListener("click", (event) => {
   }
 });
 
-computerShips.addEventListener("click", (event) => {
-  if (game.getGameStage() == "beg" && game.getActivePlayer() === computer) {
+player2Ships.addEventListener("click", (event) => {
+  if (game.getGameStage() == "beg" && game.getActivePlayer() === player2) {
     let selectedShipEventTarget = event.target.parentElement.classList[1];
-    let computerShipContainer = document.querySelector(
-      ".computer.ships-container"
+    let player2ShipContainer = document.querySelector(
+      ".player2.ships-container"
     );
-    computerShipContainer.setAttribute(
+    player2ShipContainer.setAttribute(
       "data-selectedShip",
       selectedShipEventTarget
     );
@@ -72,29 +76,29 @@ computerShips.addEventListener("click", (event) => {
   }
 });
 
-computerGrid.addEventListener("click", (event) => {
-  if (game.getGameStage() == "beg" && game.getActivePlayer() === computer) {
+player2Grid.addEventListener("click", (event) => {
+  if (game.getGameStage() == "beg" && game.getActivePlayer() === player2) {
     let rowCoord = event.target.dataset.row;
     let colCoord = event.target.dataset.col;
-    let computerShipContainer = document.querySelector(
-      ".computer.ships-container"
+    let player2ShipContainer = document.querySelector(
+      ".player2.ships-container"
     );
-    let selectedShip = computerShipContainer.dataset.selectedship;
+    let selectedShip = player2ShipContainer.dataset.selectedship;
 
     game.placeShips(selectedShip, [+rowCoord, +colCoord]);
     screenController.placeShipsDOM(
       event.target,
-      computer[selectedShip].length,
-      "computer"
+      player2[selectedShip].length,
+      "player2"
     );
-    let shipDOM = document.querySelector(`.computer .${selectedShip}`);
+    let shipDOM = document.querySelector(`.player2 .${selectedShip}`);
     shipDOM.remove();
-    computerShipContainer.dataset.selectedship = "";
-    if (!computerShipContainer.firstElementChild) {
-      let computerGridClass = ".computer";
+    player2ShipContainer.dataset.selectedship = "";
+    if (!player2ShipContainer.firstElementChild) {
+      let player2GridClass = ".player2";
 
       game.switchActivePlayer();
-      screenController.hideBoard(computerGridClass);
+      screenController.hideBoard(player2GridClass);
       game.switchGameStage();
       screenController.displayActivePlayer(game.getActivePlayer().name);
       event.stopImmediatePropagation();
@@ -104,12 +108,12 @@ computerGrid.addEventListener("click", (event) => {
   }
 });
 /* Attacking ships stage */
-computerGrid.addEventListener("click", (event) => {
-  let computerGrid = document.querySelector(".computer-grid-container");
+player2Grid.addEventListener("click", (event) => {
+  let player2Grid = document.querySelector(".player2-grid-container");
   if (
     game.getGameStage() == "mid" &&
-    game.getActivePlayer() === player &&
-    event.target.parentElement == computerGrid
+    game.getActivePlayer() === player1 &&
+    event.target.parentElement == player2Grid
   ) {
     let rowCoord = event.target.dataset.row;
     let colCoord = event.target.dataset.col;
@@ -117,14 +121,14 @@ computerGrid.addEventListener("click", (event) => {
     screenController.placeAttacksDOM(status, event.target);
     if (status === "all sunk") {
       screenController.displayWinner(game.getActivePlayer().name);
-      let computerGridClass = ".computer";
-      let playerGridClass = ".player";
+      let player2GridClass = ".player2";
+      let player1GridClass = ".player1";
       screenController.revealBoard(
-        computerGridClass,
+        player2GridClass,
         game.getOtherPlayer().board.gameBoard
       );
       screenController.revealBoard(
-        playerGridClass,
+        player1GridClass,
         game.getActivePlayer().board.gameBoard
       );
       return;
@@ -134,12 +138,12 @@ computerGrid.addEventListener("click", (event) => {
     screenController.displayActivePlayer(game.getActivePlayer().name);
   }
 });
-playerGrid.addEventListener("click", (event) => {
-  let playerGrid = document.querySelector(".player-grid-container");
+player1Grid.addEventListener("click", (event) => {
+  let player1Grid = document.querySelector(".player1-grid-container");
   if (
     game.getGameStage() == "mid" &&
-    game.getActivePlayer() === computer &&
-    event.target.parentElement == playerGrid
+    game.getActivePlayer() === player2 &&
+    event.target.parentElement == player1Grid
   ) {
     let rowCoord = event.target.dataset.row;
     let colCoord = event.target.dataset.col;
@@ -147,14 +151,14 @@ playerGrid.addEventListener("click", (event) => {
     screenController.placeAttacksDOM(status, event.target);
     if (status === "all sunk") {
       screenController.displayWinner(game.getActivePlayer().name);
-      let computerGridClass = ".computer";
-      let playerGridClass = ".player";
+      let player2GridClass = ".player2";
+      let player1GridClass = ".player1";
       screenController.revealBoard(
-        playerGridClass,
+        player1GridClass,
         game.getOtherPlayer().board.gameBoard
       );
       screenController.revealBoard(
-        computerGridClass,
+        player2GridClass,
         game.getActivePlayer().board.gameBoard
       );
       return;
