@@ -35,7 +35,6 @@ class GameController {
   placeShips(ship, start) {
     let end = [+start[0], +start[1] + this.#activePlayer[ship].length - 1];
     this.#activePlayer.board.placeShip(this.#activePlayer[ship], start, end);
-    /* this.switchActivePlayer(); */
   }
 
   placeAttack(row, col) {
@@ -62,7 +61,6 @@ let computerGrid = document.querySelector(".computer-grid-container");
 let playerShips = document.querySelector(".player.ships-container");
 let computerShips = document.querySelector(".computer.ships-container");
 let playerGrid = document.querySelector(".player-grid-container");
-
 screenController.createGridCells();
 
 /* Placing ships stage */
@@ -96,9 +94,12 @@ playerGrid.addEventListener("click", (event) => {
     shipDOM.remove();
 
     playerShipContainer.dataset.selectedship = "";
-    console.log(playerShipContainer.dataset.selectedship);
+
     if (!playerShipContainer.firstElementChild) {
+      let playerGridClass = ".player";
+
       game.switchActivePlayer();
+      screenController.hideBoard(playerGridClass);
       screenController.displayActivePlayer(game.getActivePlayer().name);
     }
     event.stopImmediatePropagation();
@@ -141,7 +142,10 @@ computerGrid.addEventListener("click", (event) => {
     shipDOM.remove();
     computerShipContainer.dataset.selectedship = "";
     if (!computerShipContainer.firstElementChild) {
+      let computerGridClass = ".computer";
+
       game.switchActivePlayer();
+      screenController.hideBoard(computerGridClass);
       game.switchGameStage();
       screenController.displayActivePlayer(game.getActivePlayer().name);
       event.stopImmediatePropagation();
@@ -163,6 +167,16 @@ computerGrid.addEventListener("click", (event) => {
     let status = game.placeAttack(+rowCoord, +colCoord);
     if (status === "all sunk") {
       screenController.displayWinner(game.getActivePlayer().name);
+      let computerGridClass = ".computer";
+      let playerGridClass = ".player";
+      screenController.revealBoard(
+        computerGridClass,
+        game.getActivePlayer().board.gameBoard
+      );
+      screenController.revealBoard(
+        playerGridClass,
+        game.getOtherPlayer().board.gameBoard
+      );
     }
     screenController.placeAttacksDOM(status, event.target);
     game.switchActivePlayer();
@@ -181,16 +195,20 @@ playerGrid.addEventListener("click", (event) => {
     let status = game.placeAttack(+rowCoord, +colCoord);
     if (status === "all sunk") {
       screenController.displayWinner(game.getActivePlayer().name);
+      let computerGridClass = ".computer";
+      let playerGridClass = ".player";
+      screenController.revealBoard(
+        computerGridClass,
+        game.getActivePlayer().board.gameBoard
+      );
+      screenController.revealBoard(
+        playerGridClass,
+        game.getOtherPlayer().board.gameBoard
+      );
     }
     screenController.placeAttacksDOM(status, event.target);
     game.switchActivePlayer();
+
     screenController.displayActivePlayer(game.getActivePlayer().name);
   }
 });
-/* computerGrid.addEventListener("click", (event) => {
-  let rowCoord = event.target.dataset.row;
-  let colCoord = event.target.dataset.col;
-  let status = game.placeAttack(+rowCoord, +colCoord);
-  screenController.placeAttacksDOM(status, event.target);
-});
- */

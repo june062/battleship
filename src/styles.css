@@ -12,6 +12,12 @@ body {
   display: grid;
   grid-template-rows: 1fr 5fr;
 }
+.game-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+}
 .main-game-area {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -33,6 +39,10 @@ body {
   height: 2.46rem;
   width: 2.46rem;
   border: 1px solid black;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .grid-cell:hover {
   background-color: rgba(255, 2, 2, 0.822);

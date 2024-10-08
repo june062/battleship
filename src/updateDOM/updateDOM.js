@@ -2,19 +2,20 @@ class UIController {
   placeAttacksDOM(attackStatus, target) {
     if (attackStatus == "miss") {
       let missIcon = document.createElement("p");
-      missIcon.textContent = "x";
+      missIcon.textContent = "*";
       target.appendChild(missIcon);
     } else if (attackStatus == "hit") {
       let hitIcon = document.createElement("p");
-      hitIcon.textContent = "O";
+      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
+      target.style.backgroundColor = "rgb(235, 45, 45)";
     } else if (attackStatus == "one sunk") {
       let hitIcon = document.createElement("p");
-      hitIcon.textContent = "O";
+      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
+      target.style.backgroundColor = "rgb(235, 45, 45)";
 
       let audioElement = document.createElement("audio");
-      console.log(audioElement);
       audioElement.setAttribute("autoplay", "");
       let audioSource = document.createElement("source");
       audioSource.setAttribute("src", `${require("../Assets/fart.mp3")}`);
@@ -24,11 +25,11 @@ class UIController {
       target.appendChild(audioElement);
     } else {
       let hitIcon = document.createElement("p");
-      hitIcon.textContent = "O";
+      hitIcon.textContent = "X";
       target.appendChild(hitIcon);
+      target.style.backgroundColor = "rgb(235, 45, 45)";
 
       let audioElement = document.createElement("audio");
-      console.log(audioElement);
       audioElement.setAttribute("autoplay", "");
       let audioSource = document.createElement("source");
       audioSource.setAttribute("src", `${require("../Assets/battleshit.mp3")}`);
@@ -67,7 +68,7 @@ class UIController {
           }'][data-col = '${+eventTarget.dataset.col + i}']`
         );
 
-        element.style.backgroundColor = "blue";
+        element.style.backgroundColor = "rgb(45, 203, 235)";
       }
     } else {
       for (let i = 0; i < shipLength; i++) {
@@ -77,7 +78,7 @@ class UIController {
           }'][data-col = '${+eventTarget.dataset.col + i}']`
         );
 
-        element.style.backgroundColor = "blue";
+        element.style.backgroundColor = "rgb(45, 203, 235)";
       }
     }
   }
@@ -88,6 +89,48 @@ class UIController {
   displayWinner(player) {
     let gameHeader = document.querySelector(".game-title");
     gameHeader.textContent = `${player}'s the winner! `;
+  }
+  hideBoard(boardToHideClass) {
+    let boardToHideDOM = document.querySelector(
+      `${boardToHideClass}-grid-container`
+    );
+
+    for (let element of boardToHideDOM.children) {
+      while (element.firstElementChild) {
+        element.removeChild(element.firstElementChild);
+      }
+      element.style.backgroundColor = "";
+    }
+  }
+  revealBoard(boardToShowClass, boardToShow) {
+    /* Loop through board to show, look at the status of all the cells,
+    (hit, miss, sunk) and update the correct board DOM with that info*/
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (
+          boardToShow[row][col].ship == null &&
+          boardToShow[row][col].miss == false
+        ) {
+          continue;
+        } else if (
+          boardToShow[row][col].ship !== null &&
+          boardToShow[row][col].hit == false
+        ) {
+          let gridCell = document.querySelector(
+            `${boardToShowClass}-grid-container [data-row = '${row}'][data-col = '${col}']`
+          );
+          gridCell.style.backgroundColor = "rgb(45, 203, 235)";
+        } else if (
+          boardToShow[row][col].ship !== null &&
+          boardToShow[row][col].hit == true
+        ) {
+          let gridCell = document.querySelector(
+            `${boardToShowClass}-grid-container [data-row = '${row}'][data-col = '${col}']`
+          );
+          gridCell.style.backgroundColor = "rgb(235, 45, 45)";
+        }
+      }
+    }
   }
 }
 let screenController = new UIController();
