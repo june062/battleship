@@ -1,11 +1,6 @@
 import "./styles.css";
 let screenController = require("./updateDOM/updateDOM.js");
-let GameController = require("./gameController/gameController.js");
-let Player = require("./Player/players.js");
-let player1 = new Player("player1");
-let player2 = new Player("player2");
-
-let game = new GameController(player1, player2);
+let { game, player1, player2 } = require("./gameController/gameController.js");
 let player2Grid = document.querySelector(".player2-grid-container");
 let player1Ships = document.querySelector(".player1.ships-container");
 let player2Ships = document.querySelector(".player2.ships-container");

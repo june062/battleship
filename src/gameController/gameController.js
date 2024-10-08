@@ -1,3 +1,7 @@
+let Player = require("../Player/players.js");
+let player1 = new Player("player1");
+let player2 = new Player("player2");
+
 class GameController {
   #activePlayer;
   #gameStage = "beg";
@@ -48,4 +52,5 @@ class GameController {
     }
   }
 }
-module.exports = GameController;
+let game = new GameController(player1, player2);
+module.exports = { game, player1, player2 };
